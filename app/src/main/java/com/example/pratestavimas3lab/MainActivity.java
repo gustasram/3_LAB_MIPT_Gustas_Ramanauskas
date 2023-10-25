@@ -16,12 +16,15 @@ public class MainActivity extends AppCompatActivity {
     private char currentOperator = ' ';
     private DecimalFormat decimalFormat = new DecimalFormat("#,##0.########");
 
+    boolean isCalculatedValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         calculatorScreen = findViewById(R.id.calculatorScreen);
+        isCalculatedValue = false;
     }
 
     public void onButtonClick(View view) {
@@ -30,9 +33,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Calculator", "Which Button is Clicked: " + buttonText); // Error Handling
 
         if (buttonText.matches("[0-9.]")) {
+            if(isCalculatedValue == true){
+                currentInput.setLength(0);
+                isCalculatedValue = false;
+            }
             currentInput.append(buttonText);
             calculatorScreen.setText(currentInput.toString());
         } else if (buttonText.matches("[+\\-*/]")) {
+            isCalculatedValue = false;
             currentInput.append(" " + buttonText + " ");
             calculatorScreen.setText(currentInput.toString());
         } else if (buttonText.equals("=")) {
@@ -51,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 currentInput.append(buttonText);
                 calculatorScreen.setText(currentInput.toString());
             }
+        } else if (buttonText.equals("+/-")) {
+            changeSign();
         }
     }
 
@@ -94,16 +104,20 @@ public class MainActivity extends AppCompatActivity {
                 switch (operator) {
                     case '+':
                         result = num1 + num2;
+                        isCalculatedValue = true;
                         break;
                     case '-':
                         result = num1 - num2;
+                        isCalculatedValue = true;
                         break;
                     case '*':
                         result = num1 * num2;
+                        isCalculatedValue = true;
                         break;
                     case '/':
                         if (num2 != 0) {
                             result = num1 / num2;
+                            isCalculatedValue = true;
                         } else {
                             // Handling division by 0 (seems like it doesn't work)
                             currentInput.setLength(0);
@@ -124,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 // currentInput reset code
                 currentOperator = ' ';
                 currentInput.setLength(0);
+                currentInput.append(result);
             } catch (NumberFormatException e) {
                 // Invalid number error handling (seems like it doesn't work)
                 currentInput.setLength(0);
@@ -157,4 +172,28 @@ public class MainActivity extends AppCompatActivity {
             currentInput.setLength(0);
         }
     }
+    // Changing the number from positive to negative and vice versa
+    private void changeSign() {
+        if (currentInput.length() > 0) {
+            try {
+                double currentValue = Double.parseDouble(currentInput.toString());
+                double newValue = -currentValue;
+
+                if (Math.floor(newValue) == newValue) {
+                    currentInput.setLength(0);
+                    currentInput.append(Integer.toString((int) newValue));
+                } else {
+                    currentInput.setLength(0);
+                    currentInput.append(Double.toString(newValue));
+                }
+
+                calculatorScreen.setText(currentInput.toString());
+            } catch (NumberFormatException e) {
+                // Handle invalid number format
+                currentInput.setLength(0);
+                calculatorScreen.setText("Error");
+            }
+        }
+    }
+
 }
