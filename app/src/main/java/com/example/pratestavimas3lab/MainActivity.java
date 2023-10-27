@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Calculator", "Which Button is Clicked: " + buttonText); // Error Handling
 
         if (buttonText.matches("[0-9.]")) {
-            if(isCalculatedValue == true){
+            if (isCalculatedValue) {
                 currentInput.setLength(0);
                 isCalculatedValue = false;
             }
@@ -41,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
             calculatorScreen.setText(currentInput.toString());
         } else if (buttonText.matches("[+\\-*/]")) {
             isCalculatedValue = false;
-            currentInput.append(" " + buttonText + " ");
+            if (currentInput.length() > 0) {
+                if (currentInput.charAt(currentInput.length() - 1) == ' ') {
+                    // Last operator replacement
+                    currentInput.setCharAt(currentInput.length() - 2, buttonText.charAt(0));
+                } else {
+                    currentInput.append(" " + buttonText + " ");
+                }
+            }
             calculatorScreen.setText(currentInput.toString());
         } else if (buttonText.equals("=")) {
             calcEquals();
@@ -167,11 +174,17 @@ public class MainActivity extends AppCompatActivity {
     // Square Root calculating function
     private void calcSquareRoot() {
         if (currentInput.length() > 0) {
-            double value = Double.parseDouble(currentInput.toString());
-            result = Math.sqrt(value);
-            currentInput.setLength(0);
-            currentInput.append(result);
-            isCalculatedValue = true;
+            try {
+                double value = Double.parseDouble(currentInput.toString());
+                result = Math.sqrt(value);
+                currentInput.setLength(0);
+                currentInput.append(result);
+                isCalculatedValue = true;
+            } catch (NumberFormatException e) {
+                // Handle invalid number format
+                currentInput.setLength(0);
+                calculatorScreen.setText("Error");
+            }
         }
     }
     // Changing the number from positive to negative and vice versa
