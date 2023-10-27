@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             double value = Double.parseDouble(currentInput.toString());
             result = Math.sqrt(value);
             currentInput.setLength(0);
+            currentInput.append(result);
+            isCalculatedValue = true;
         }
     }
     // Changing the number from positive to negative and vice versa

@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Pratestavimas 3 LAB</string>
+    <string name="clearEverything">CE</string>
+    <string name="delSomething">DEL</string>
+    <string name="squareRoot">√</string>
+    <string name="divisionSign">/</string>
+    <string name="number7">7</string>
+    <string name="number8">8</string>
+    <string name="number9">9</string>
+    <string name="multiplicationSign">*</string>
+    <string name="number4">4</string>
+    <string name="number5">5</string>
+    <string name="number6">6</string>
+    <string name="plusSign">+</string>
+    <string name="number1">1</string>
+    <string name="number2">2</string>
+    <string name="number3">3</string>
+    <string name="minusSign">-</string>
+    <string name="plusMinus">+/-</string>
+    <string name="number0">0</string>
+    <string name="commaSign">.</string>
+    <string name="equalSign">=</string>
 </resources>
